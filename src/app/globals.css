@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+/* Premium corporate. White and cool-slate grounds, slate ink, deep navy behind photography and in
+   the footer, crimson only where the visitor acts. Geist throughout; 6px controls, 10px panels and
+   one long soft shadow for anything that floats. Dark is the evening variant of the same system. */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-crimson: var(--crimson);
+  --color-crimson-hover: var(--crimson-hover);
+  --color-navy: var(--navy);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --shadow-float: var(--shadow-lg);
+  --shadow-raise: var(--shadow-md);
+}
+
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-2: #f6f7f9;
+  --bg-3: #eceff3;
+  --surface: #ffffff;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --ink-3: #64748b;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --crimson: #e11d48;
+  --crimson-hover: #be123c;
+  --navy: #0a0f1e;
+  --shadow-lg: 0 30px 60px -20px rgb(10 15 30 / 0.45);
+  --shadow-md: 0 14px 34px -14px rgb(10 15 30 / 0.2);
+
+  --gutter: clamp(20px, 4.45vw, 64px);
+  --content: 1312px;
+  --pad-x: max(var(--gutter), calc((100cqw - var(--content)) / 2));
+  --nav-h: 96px;
+  --nav-h-solid: 72px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Evening variant, and the always-dark regions (hero, emergency band, footer). */
+.dark,
+.on-dark {
+  color-scheme: dark;
+  --bg: #0a0f1e;
+  --bg-2: #0e1528;
+  --bg-3: #172036;
+  --surface: #121a2e;
+  --ink: #f1f5f9;
+  --ink-2: #b4bfcf;
+  --ink-3: #8a97ab;
+  --line: rgb(255 255 255 / 0.1);
+  --line-strong: rgb(255 255 255 / 0.22);
+  --shadow-lg: 0 30px 60px -20px rgb(0 0 0 / 0.7);
+  --shadow-md: 0 14px 34px -14px rgb(0 0 0 / 0.55);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h-solid) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    caret-color: var(--crimson);
+    scrollbar-color: var(--line-strong) var(--bg);
+  }
+  ::selection {
+    background: var(--crimson);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--crimson);
+    outline-offset: 3px;
+  }
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    text-underline-offset: 0.24em;
+    text-decoration-thickness: 1px;
+  }
+}
+
+@layer components {
+  .cq {
+    container-type: inline-size;
+  }
+  .wrap {
+    padding-inline: var(--pad-x);
+  }
+
+  /* ---------- Type ---------- */
+  .h-hero {
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    /* width- and height-aware so the headline never crowds the nav on short laptops */
+    font-size: clamp(2.5rem, min(4.72vw, 7.6svh), 4.25rem);
+  }
+  .h-section {
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+    font-size: clamp(2rem, 3.7vw, 3.25rem);
+  }
+  .h-sub {
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    font-size: clamp(1.375rem, 2vw, 1.75rem);
+  }
+  .lead {
+    font-size: clamp(1.125rem, 1.45vw, 1.1875rem);
+    line-height: 1.55;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 20px;
+    border-radius: var(--radius-control);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 220ms ease,
+      transform 180ms ease;
+  }
+  .btn-lg {
+    height: 56px;
+    padding: 0 26px;
+    font-size: 1rem;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background: var(--crimson);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--crimson-hover);
+    box-shadow: 0 14px 30px -12px rgb(225 29 72 / 0.6);
+  }
+  /* on photography */
+  .btn-glass {
+    background: rgb(255 255 255 / 0.12);
+    border: 1px solid rgb(255 255 255 / 0.35);
+    color: #fff;
+  }
+  .btn-glass:hover {
+    background: rgb(255 255 255 / 0.2);
+    border-color: rgb(255 255 255 / 0.6);
+  }
+  .btn-outline {
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    background: var(--surface);
+  }
+  .btn-outline:hover {
+    border-color: var(--ink);
+  }
+
+  /* ---------- Panels ---------- */
+  .panel {
+    background: var(--surface);
+    border-radius: var(--radius-panel);
+  }
+  .frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-panel);
+    background: var(--bg-3);
+  }
+
+  /* Live line indicator */
+  .pulse {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+  }
+  .pulse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: inherit;
+    animation: pulse 2s var(--ease-out) infinite;
+  }
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    to {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+
+  /* ---------- The opening: the photograph settles, the copy rises, the panel docks ---------- */
+  .settle {
+    animation: settle 2.2s var(--ease-out) both;
+  }
+  @keyframes settle {
+    from {
+      transform: scale(1.07);
+    }
+  }
+  .rise {
+    animation: rise 900ms var(--ease-out) both;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+  }
+  .dock {
+    animation: dock 1100ms var(--ease-out) 380ms both;
+  }
+  @keyframes dock {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  }
+  /* once the panel has docked, each service line settles into its cell */
+  .dock-cell {
+    animation: rise 900ms var(--ease-out) both;
+    animation-delay: calc(640ms + var(--i, 0) * 90ms);
+  }
+
+  /* Text masks: a word or digit rises from under its own baseline. The padding keeps descenders,
+     overshoot and the last glyph's negative tracking inside the clip; the margin hands the space back. */
+  .mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: 0.08em 0.06em 0.16em;
+    margin: -0.08em -0.06em -0.16em;
+  }
+  .mask > span {
+    display: inline-block;
+  }
+  .hero-words .mask > span {
+    animation: word-rise 1100ms var(--ease-out) both;
+    animation-delay: calc(90ms + var(--i, 0) * 70ms);
+  }
+  @keyframes word-rise {
+    from {
+      transform: translateY(118%);
+    }
+  }
+
+  /* Native dialog lightbox */
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(10 15 30 / 0.97);
+    color: #f1f5f9;
+  }
+  .lightbox::backdrop {
+    background: rgb(10 15 30 / 0.7);
+  }
+  .lightbox[open] {
+    animation: fade-in 220ms ease-out;
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Theme change cross-fades instead of snapping. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
