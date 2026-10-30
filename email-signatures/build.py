@@ -317,9 +317,24 @@ VARIANTS = [
 ]
 
 
-def standalone(body, base):
+# Copies the rendered signature (not its source) so it pastes into Outlook or Gmail as a signature
+COPY_BAR = """<div id="copy-bar" style="font:14px Arial,sans-serif;margin-bottom:20px;padding:14px 16px;background:#f6f7f9;border:1px solid #e2e8f0;border-radius:8px;max-width:568px;">
+<button onclick="copySig()" style="font:bold 14px Arial,sans-serif;background:#e11d48;color:#fff;border:0;border-radius:6px;padding:10px 18px;cursor:pointer;">Copy signature</button>
+<span id="copy-msg" style="margin-left:12px;color:#475569;">Then paste into your email signature settings with Ctrl+V.</span></div>
+<script>
+function copySig() {
+  var sig = document.getElementById('signature'), range = document.createRange(), sel = window.getSelection();
+  range.selectNode(sig); sel.removeAllRanges(); sel.addRange(range);
+  var ok = document.execCommand('copy'); sel.removeAllRanges();
+  document.getElementById('copy-msg').textContent = ok ? 'Copied. Paste it into your signature settings with Ctrl+V.' : 'Copy failed: select the signature with your mouse and press Ctrl+C.';
+}
+</script>"""
+
+
+def standalone(body, base, copy_bar=True):
+    bar = COPY_BAR if copy_bar else ""
     return (f'<!doctype html><html><head><meta charset="utf-8"><title>{P["name"]} signature</title></head>'
-            f'<body style="margin:0;padding:24px;background:#ffffff;">{body.replace("{BASE}", base)}</body></html>')
+            f'<body style="margin:0;padding:24px;background:#ffffff;">{bar}<div id="signature">{body.replace("{BASE}", base)}</div></body></html>')
 
 
 def board():
@@ -379,7 +394,7 @@ if __name__ == "__main__":
     for slug, *_ , fn in VARIANTS:
         (OUT / "html" / f"{slug}.html").write_text(standalone(fn(), HOSTED))
         (OUT / "html-test" / f"{slug}.html").write_text(standalone(fn(), TEST_HOSTED))
-        (OUT / f"_preview-{slug}.html").write_text(standalone(fn(), LOCAL).replace(
+        (OUT / f"_preview-{slug}.html").write_text(standalone(fn(), LOCAL, copy_bar=False).replace(
             "<head>", "<head><style>*{font-family:Inter,Arial,sans-serif!important}</style>"))
     (OUT / "_board.html").write_text(board())
     print("built", len(VARIANTS))

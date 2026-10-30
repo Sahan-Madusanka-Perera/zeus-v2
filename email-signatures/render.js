@@ -43,7 +43,7 @@ const IGNITE_SLICES = [
     await page.goto('file://' + path.join(dir, f));
     await page.waitForLoadState('networkidle');
     const out = f.replace('_preview-', '').replace('.html', '.png');
-    await page.locator('body > table').screenshot({ path: path.join(dir, 'previews', out) });
+    await page.locator('#signature > table').screenshot({ path: path.join(dir, 'previews', out) });
   }
 
   await page.goto('file://' + path.join(dir, '_board.html'));
