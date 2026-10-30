@@ -155,6 +155,151 @@ def v6():
         f'</td></tr>')
 
 
+FB = "https://www.facebook.com/zpiosrilanka/"
+LI = "https://www.linkedin.com/company/zeus-power-international/"
+SOFT = "#94a3b8"
+
+
+def spacer(h):
+    return f'<div style="height:{h}px;line-height:{h}px;font-size:0;">&nbsp;</div>'
+
+
+def icon_rows(rows, color=INK2, dark=False, size=13):
+    """Contact rows led by a 16px icon image instead of a letter."""
+    suffix = "-dark" if dark else ""
+    html = "".join(
+        f'<tr><td style="padding:3px 10px 3px 0;vertical-align:top;">{img(f"ic-{ic}{suffix}.png", 16, 16, "")}</td>'
+        f'<td style="padding:2px 0;font-family:{FONT};font-size:{size}px;color:{color};line-height:19px;">{val}</td></tr>'
+        for ic, val in rows)
+    return f'<table cellpadding="0" cellspacing="0" border="0" role="presentation">{html}</table>'
+
+
+def contacts(color=INK2, dark=False, address=True, phone=True):
+    rows = []
+    if phone:
+        rows.append(("phone", a(P["phone_href"], P["phone"], color)))
+    rows += [("mail", a("mailto:" + P["email"], P["email"], color)),
+             ("globe", a(P["web_href"], P["web"], color))]
+    if address:
+        rows.append(("pin", a(P["maps"], "655/1, Gunathilaka Gardens,<br>Elvitigala Mawatha, Colombo 05", color)))
+    return icon_rows(rows, color, dark)
+
+
+def socials(dark=False):
+    s = "-dark" if dark else ""
+    cell = lambda href, n, alt: f'<td style="padding-right:8px;">{a(href, img(f"so-{n}{s}.png", 26, 26, alt))}</td>'
+    return table(f'<tr>{cell(FB, "facebook", "Facebook")}{cell(LI, "linkedin", "LinkedIn")}{cell(P["web_href"], "globe", "Website")}</tr>')
+
+
+def split_name(size=24, first=NAVY, last=SOFT, caret=True):
+    first_name, last_name = P["name"].split(" ", 1)
+    bar = f'<span style="color:{CRIMSON};font-weight:300;">&nbsp;|</span>' if caret else ""
+    return (f'<div style="font-family:{FONT};font-size:{size}px;font-weight:bold;line-height:{size + 6}px;letter-spacing:-0.3px;">'
+            f'<span style="color:{first};">{first_name}</span> <span style="color:{last};">{last_name}</span>{bar}</div>')
+
+
+def stat(value, label, value_color=CRIMSON, label_color=INK3, bg=None, pad="12px 14px"):
+    bgc = f"background:{bg};" if bg else ""
+    return (f'<td style="{bgc}padding:{pad};vertical-align:top;">'
+            f'<div style="font-family:{FONT};font-size:20px;font-weight:bold;color:{value_color};line-height:24px;letter-spacing:-0.3px;">{value}</div>'
+            f'<div style="font-family:{FONT};font-size:10px;color:{label_color};letter-spacing:1.2px;text-transform:uppercase;line-height:14px;padding-top:2px;">{label}</div></td>')
+
+
+# 07 ─ Ignite: gradient banner with tagline and socials, split name, photo + bolt badge
+def v7():
+    s = lambda f, w, h, alt="": img(f"{f}.png", w, h, alt)
+    banner = (
+        f'<tr><td colspan="2" style="padding:0;line-height:0;font-size:0;">{s("ignite-top", 600, 104, "Zeus Power International: Sri Lanka&#39;s 24/7 technical breakdown specialists")}</td></tr>'
+        '<tr><td colspan="2" style="padding:0;line-height:0;font-size:0;">'
+        + table('<tr>'
+                f'<td style="line-height:0;">{s("ignite-row-a", 28, 46)}</td>'
+                f'<td style="line-height:0;">{a(FB, s("ignite-fb", 24, 46, "Facebook"))}</td>'
+                f'<td style="line-height:0;">{s("ignite-gap-1", 8, 46)}</td>'
+                f'<td style="line-height:0;">{a(LI, s("ignite-li", 24, 46, "LinkedIn"))}</td>'
+                f'<td style="line-height:0;">{s("ignite-gap-2", 8, 46)}</td>'
+                f'<td style="line-height:0;">{a(P["web_href"], s("ignite-web", 24, 46, "Website"))}</td>'
+                f'<td style="line-height:0;">{s("ignite-row-b", 484, 46)}</td></tr>')
+        + '</td></tr>')
+    return table(
+        banner
+        + f'<tr><td style="padding:22px 0 22px 28px;vertical-align:top;background:#ffffff;">{split_name()}'
+        f'<div style="font-family:{FONT};font-size:13px;color:{INK2};line-height:18px;padding-top:4px;">{P["title"]}, Zeus Power International</div>'
+        f'{spacer(14)}{contacts(address=True)}</td>'
+        f'<td style="padding:22px 28px 22px 0;vertical-align:bottom;text-align:right;background:#ffffff;">'
+        f'<div style="display:inline-block;">{s("ignite-avatar", 178, 104, P["name"])}</div></td></tr>',
+        f"width:600px;border:1px solid {LINE};background:#ffffff;")
+
+
+# 08 ─ Voltage: dark card, ringed portrait, stats band
+def v8():
+    return table(
+        f'<tr><td colspan="2" style="line-height:0;font-size:0;">{img("bar-gradient.png", 600, 4, "")}</td></tr>'
+        f'<tr><td width="170" style="width:170px;padding:24px 8px 18px 22px;vertical-align:middle;background:{NAVY};">{img("voltage-portrait.png", 140, 140, P["name"])}</td>'
+        f'<td style="padding:24px 28px 18px 14px;vertical-align:middle;background:{NAVY};">'
+        f'{split_name(24, "#ffffff", "#64748b", caret=False)}'
+        f'<div style="font-family:{FONT};font-size:11px;font-weight:bold;color:#fb7185;letter-spacing:2.2px;text-transform:uppercase;line-height:18px;padding-top:4px;">{P["title"]}</div>'
+        f'{spacer(14)}{contacts("#e2e8f0", dark=True, address=False)}</td></tr>'
+        f'<tr><td colspan="2" style="padding:0 22px 22px 22px;background:{NAVY};">'
+        + table('<tr>'
+                + stat("500+", "Projects", "#ffffff", SOFT, pad="14px 18px 0 0")
+                + stat("15+", "Years", "#ffffff", SOFT, pad="14px 18px 0 18px")
+                + stat("24/7", "Breakdown response", "#ffffff", SOFT, pad="14px 18px 0 18px")
+                + f'<td style="padding:14px 0 0 0;vertical-align:middle;text-align:right;"><div style="display:inline-block;">{logo(118, white=True)}</div></td></tr>',
+                "width:100%;border-top:1px solid #1e293b;")
+        + '</td></tr>',
+        f"width:600px;background:{NAVY};")
+
+
+# 09 ─ Credentials: no photo, logo-led with a proof row
+def v9():
+    services = f' <span style="color:{CRIMSON};">&bull;</span> '.join(["Electrical", "Fire protection", "Air conditioning", "Solar"])
+    return table(
+        f'<tr><td colspan="2" style="line-height:0;font-size:0;">{img("bar-gradient.png", 600, 4, "")}</td></tr>'
+        f'<tr><td style="padding:24px 26px 20px 24px;vertical-align:middle;width:170px;border-right:1px solid {LINE};">{logo(160)}</td>'
+        f'<td style="padding:22px 24px 20px 26px;vertical-align:top;">{split_name(23, caret=False)}'
+        f'<div style="font-family:{FONT};font-size:11px;font-weight:bold;color:{CRIMSON};letter-spacing:2.2px;text-transform:uppercase;line-height:18px;padding-top:3px;">{P["title"]}</div>'
+        f'{spacer(10)}{contacts(address=False)}</td></tr>'
+        f'<tr><td colspan="2" style="padding:0 24px;">'
+        + table('<tr>' + stat("500+", "Projects completed", bg="#f6f7f9")
+                + '<td style="width:6px;font-size:0;">&nbsp;</td>' + stat("15+", "Years of experience", bg="#f6f7f9")
+                + '<td style="width:6px;font-size:0;">&nbsp;</td>' + stat("30 min", "Avg. emergency response", bg="#f6f7f9") + '</tr>',
+                "width:100%;")
+        + '</td></tr>'
+        f'<tr><td colspan="2" style="padding:14px 24px 20px 24px;font-family:{FONT};font-size:10px;color:{INK3};letter-spacing:1.6px;text-transform:uppercase;line-height:14px;">{services}</td></tr>',
+        f"width:600px;border:1px solid {LINE};background:#ffffff;")
+
+
+# 10 ─ Portrait Duo: photo panel fading into navy beside a clean white column
+def v10():
+    return table(
+        f'<tr><td style="vertical-align:top;background:{NAVY};width:190px;line-height:0;font-size:0;">{img("duo-panel.png", 190, 330, P["name"])}</td>'
+        f'<td style="padding:24px 28px 22px 28px;vertical-align:top;border:1px solid {LINE};border-left:0;background:#ffffff;">'
+        f'{logo(118)}{spacer(16)}'
+        f'{split_name(24, caret=False)}'
+        f'<div style="font-family:{FONT};font-size:11px;font-weight:bold;color:{CRIMSON};letter-spacing:2.2px;text-transform:uppercase;line-height:18px;padding-top:3px;">{P["title"]}</div>'
+        f'<div style="width:40px;height:2px;background:{CRIMSON};line-height:2px;font-size:0;margin:12px 0;">&nbsp;</div>'
+        f'{contacts()}{spacer(12)}{socials()}</td></tr>',
+        "width:600px;")
+
+
+# 11 ─ Hotline: no photo, navy hotline column leads
+def v11():
+    return table(
+        f'<tr><td style="padding:24px 22px;vertical-align:top;background:{NAVY};width:170px;">'
+        f'{img("hotline-zap.png", 44, 44, "")}{spacer(14)}'
+        f'<div style="font-family:{FONT};font-size:10px;font-weight:bold;color:#fb7185;letter-spacing:2px;text-transform:uppercase;line-height:14px;">24/7 Hotline</div>'
+        f'<div style="font-family:{FONT};font-size:19px;font-weight:bold;line-height:26px;padding-top:4px;white-space:nowrap;">{a(P["phone_href"], P["phone"], "#ffffff", "bold")}</div>'
+        f'<div style="font-family:{FONT};font-size:12px;color:{SOFT};line-height:17px;padding-top:6px;">Average response<br><span style="color:#ffffff;font-weight:bold;">30 minutes</span></div></td>'
+        f'<td style="padding:24px 26px 22px 26px;vertical-align:top;border:1px solid {LINE};border-left:0;background:#ffffff;">'
+        f'{split_name(24)}'
+        f'<div style="font-family:{FONT};font-size:13px;color:{INK2};line-height:18px;padding-top:4px;">{P["title"]}, Zeus Power International</div>'
+        f'{spacer(14)}{contacts(phone=False)}{spacer(16)}'
+        + table(f'<tr><td style="vertical-align:middle;">{logo(116)}</td>'
+                f'<td style="vertical-align:middle;text-align:right;"><div style="display:inline-block;">{socials()}</div></td></tr>', "width:100%;")
+        + '</td></tr>',
+        "width:600px;")
+
+
 VARIANTS = [
     ("01-signature", "Signature", "With photo", "Round portrait, crimson rule and a logo footer. The all-round default.", v1),
     ("02-midnight", "Midnight", "With photo", "Navy card with the portrait full-bleed and the white logo. The boldest option.", v2),
@@ -162,6 +307,11 @@ VARIANTS = [
     ("04-logo-lead", "Logo Lead", "No photo", "The brand mark leads, details follow. Clean and corporate.", v4),
     ("05-service-banner", "Service Banner", "With photo", "Photo and details over a navy strip with services and the 24/7 line.", v5),
     ("06-compact", "Compact", "No photo", "Two lines for replies and forwards.", v6),
+    ("07-ignite", "Ignite", "With photo", "Navy-to-crimson banner with the tagline and socials, portrait paired with a bolt badge.", v7),
+    ("08-voltage", "Voltage", "With photo", "Dark card, portrait in a crimson ring, with proof points along the base.", v8),
+    ("09-credentials", "Credentials", "No photo", "Logo-led, with a row of hard numbers and the four service lines.", v9),
+    ("10-portrait-duo", "Portrait Duo", "With photo", "Portrait panel fading into navy beside a clean white column.", v10),
+    ("11-hotline", "Hotline", "No photo", "The 24/7 breakdown line leads in a navy column. Built around the service.", v11),
 ]
 
 
@@ -177,7 +327,7 @@ def board():
         f'<img src="{LOCAL}zeus-logo-white.png" style="width:220px;">'
         '<div class="kicker">Email signature concepts</div>'
         f'<h1>{P["name"]}<br><span>{P["title"]}</span></h1>'
-        f'<p>Six directions for Outlook: three with a portrait, three without. Every version is built as live HTML, so the '
+        f'<p>{len(VARIANTS)} directions for Outlook, with and without a portrait. Every version is built as live HTML, so the '
         f'phone number, email and website stay clickable and the text stays sharp on any screen.</p>'
         '</div></section>')
     pages.append(cover)
@@ -188,7 +338,6 @@ def board():
             f'<div><div class="num">{i:02d}</div><h2>{title}</h2><div class="desc">{desc}</div></div>'
             f'<div class="tag {"photo" if kind == "With photo" else ""}">{kind}</div></div>'
             '<div class="mail"><div class="bar"><span></span><span></span><span></span><em>New message</em></div>'
-            '<div class="meta"><b>To</b> client@example.com<br><b>Subject</b> Preventive maintenance schedule, November</div>'
             '<div class="body"><p>Hi,</p><p>Please find the updated maintenance schedule attached. Let me know if any of the dates need to move.</p>'
             f'<p style="margin-bottom:22px;">Kind regards,</p><div id="sig-{slug}" class="sig">{sig}</div></div></div></section>')
     css = f"""
