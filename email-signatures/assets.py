@@ -31,11 +31,6 @@ def svg(name, size, color, stroke=2):
 TRI = ('<svg viewBox="0 0 100 100" style="position:absolute;{pos}" fill="none" stroke="{c}" stroke-width="{w}" '
        'stroke-linejoin="round"><path d="M20 8 L92 50 L20 92 Z"/></svg>')
 
-# The logo's rounded "play" triangle with its rose-to-crimson stroke
-MARK = (f'<svg width="44" height="48" viewBox="0 0 44 48" fill="none"><defs><linearGradient id="mk" x1="0" y1="0" x2="0" y2="1">'
-        f'<stop offset="0" stop-color="#fb8a8a"/><stop offset="1" stop-color="{CRIMSON}"/></linearGradient></defs>'
-        '<path d="M8 6 L38 24 L8 42 Z" stroke="url(#mk)" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/></svg>')
-
 assets = {}  # name -> (width, height, inner html, transparent)
 
 
@@ -70,11 +65,9 @@ add("ignite-banner", 600, 150, f'''
   </div>
 </div>''', False)
 
-add("ignite-avatar", 178, 104, f'''
-<div style="position:relative;width:178px;height:104px">
-  <div style="position:absolute;left:74px;top:2px;width:100px;height:100px;border-radius:50%;background:{NAVY};
-    display:flex;align-items:center;justify-content:center;padding-left:22px">{MARK}</div>
-  <div style="position:absolute;left:2px;top:2px;width:100px;height:100px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px #fff">
+add("ignite-avatar", 104, 104, f'''
+<div style="position:relative;width:104px;height:104px">
+  <div style="position:absolute;left:2px;top:2px;width:100px;height:100px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 2px #fff">
     <img src="{PHOTO}" style="position:absolute;left:-74px;top:-4px;width:200px;height:200px"></div>
 </div>''')
 

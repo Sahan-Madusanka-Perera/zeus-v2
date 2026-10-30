@@ -226,7 +226,7 @@ def v7():
         f'<div style="font-family:{FONT};font-size:13px;color:{INK2};line-height:18px;padding-top:4px;">{P["title"]}, Zeus Power International</div>'
         f'{spacer(14)}{contacts(address=True)}</td>'
         f'<td style="padding:22px 28px 22px 0;vertical-align:bottom;text-align:right;background:#ffffff;">'
-        f'<div style="display:inline-block;">{s("ignite-avatar", 178, 104, P["name"])}</div></td></tr>',
+        f'<div style="display:inline-block;">{s("ignite-avatar", 104, 104, P["name"])}</div></td></tr>',
         f"width:600px;border:1px solid {LINE};background:#ffffff;")
 
 
