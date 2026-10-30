@@ -16,3 +16,8 @@ REBUILDING
   assets.py draws the graphics Outlook cannot render (gradients, ringed portraits, icons) into public/email/.
   build.py writes the signatures (01-11) and the deck; render.js renders images, previews and the PDF.
   Designs 07-11 use image slices and icon PNGs; every name, number and link is still live text.
+
+TESTING BEFORE THE SITE IS REDEPLOYED
+  html-test/ holds the same signatures, with images loaded from this branch on GitHub
+  (raw.githubusercontent.com), so they work right now. Use them for testing only; switch to
+  html/ once public/email/ is live on www.zeuspower.lk.

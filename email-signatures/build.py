@@ -8,6 +8,8 @@ import pathlib
 OUT = pathlib.Path(__file__).parent
 HOSTED = "https://www.zeuspower.lk/email/"  # upload email-assets/* here before use
 LOCAL = "../public/email/"
+# Images served straight from this branch on GitHub, for testing before the site is redeployed
+TEST_HOSTED = "https://raw.githubusercontent.com/Sahan-Madusanka-Perera/zeus-v2/claude/email-signatures/public/email/"
 
 CRIMSON = "#e11d48"
 NAVY = "#0a0f1e"
@@ -373,8 +375,10 @@ def board():
 
 if __name__ == "__main__":
     (OUT / "html").mkdir(exist_ok=True)
+    (OUT / "html-test").mkdir(exist_ok=True)
     for slug, *_ , fn in VARIANTS:
         (OUT / "html" / f"{slug}.html").write_text(standalone(fn(), HOSTED))
+        (OUT / "html-test" / f"{slug}.html").write_text(standalone(fn(), TEST_HOSTED))
         (OUT / f"_preview-{slug}.html").write_text(standalone(fn(), LOCAL).replace(
             "<head>", "<head><style>*{font-family:Inter,Arial,sans-serif!important}</style>"))
     (OUT / "_board.html").write_text(board())
